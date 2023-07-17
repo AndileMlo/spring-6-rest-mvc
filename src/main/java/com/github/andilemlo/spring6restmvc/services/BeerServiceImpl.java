@@ -5,6 +5,7 @@ import com.github.andilemlo.spring6restmvc.model.BeerStyle;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,8 +15,6 @@ import java.util.*;
 @Slf4j
 public class BeerServiceImpl implements BeerService {
     private Map<UUID,Beer> beerMap;
-
-
 
     public BeerServiceImpl() {
         this.beerMap = new HashMap<>();
@@ -63,6 +62,7 @@ public class BeerServiceImpl implements BeerService {
 
 
     }
+
 
     @Override
     public void updateBeerByID(UUID beerId, Beer beer) {
@@ -116,5 +116,31 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public void deleteBeerByID(UUID beerID, Beer beer) {
         beerMap.remove(beerID);
+    }
+
+    @Override
+    public void patchBeerbyId(UUID beerID, Beer beer) {
+        Beer existing = beerMap.get(beerID);//
+        if (StringUtils.hasText(beer.getBeerName())){
+            existing.setBeerName(beer.getBeerName());
+        }
+        if (beer.getBeerStyle() != null ) {
+            existing.setBeerName(beer.getBeerName());
+        }
+
+        if (StringUtils.hasText(beer.getUpc())) {
+            existing.setUpc(beer.getUpc());
+        }
+
+
+        if (beer.getPrice() != null ){
+            existing.setPrice(beer.getPrice());
+        }
+
+        if (beer.getQuantityOnHand() != null){
+            existing.setQuantityOnHand(beer.getQuantityOnHand());
+
+        }
+
     }
 }
