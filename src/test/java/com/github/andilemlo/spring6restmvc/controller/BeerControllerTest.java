@@ -4,6 +4,8 @@ package com.github.andilemlo.spring6restmvc.controller;
 /*be careful of static imports*/
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.andilemlo.spring6restmvc.model.Beer;
 import com.github.andilemlo.spring6restmvc.services.BeerService;
 import com.github.andilemlo.spring6restmvc.services.BeerServiceImpl;
@@ -34,6 +36,9 @@ class BeerControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     BeerServiceImpl beerServiceImpl = new BeerServiceImpl();
 
 
@@ -52,10 +57,19 @@ class BeerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()", is(3)));
-
-
-
         ;
+    }
+
+    @Test
+    void testCreateNewBeer() throws JsonProcessingException {
+       /* ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();*/
+
+
+        Beer beer = beerServiceImpl.listBeers().get(0);
+        System.out.println(objectMapper.writeValueAsString(beer));
+
+
 
     }
 

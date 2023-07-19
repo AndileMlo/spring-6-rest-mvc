@@ -1,5 +1,6 @@
 package com.github.andilemlo.spring6restmvc.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.andilemlo.spring6restmvc.model.Customer;
 import com.github.andilemlo.spring6restmvc.services.CustomerService;
 import com.github.andilemlo.spring6restmvc.services.CustomerServiceImpl;
@@ -44,8 +45,20 @@ class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()", is(3)));
-   
+
     }
+/*
+    @Test
+    void testCreateNewCustomer(){
+        ObjectMapper objectMapper = new ObjectMapper();
+
+
+
+        System.out.println();
+
+
+
+    }*/
 
     @Test
     void getCustomerById() throws Exception {
