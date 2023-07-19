@@ -31,13 +31,22 @@ public class CustomerServiceImpl implements CustomerService {
                 .lastModifiedDate(LocalDateTime.now())
                 .createdDate(LocalDateTime.now())
                 .build();
+
+        Customer customer3 = Customer.builder()
+                .id(UUID.randomUUID())
+                .customerName("Peter Smith")
+                .version(78)
+                .lastModifiedDate(LocalDateTime.now())
+                .createdDate(LocalDateTime.now())
+                .build();
         customerMap.put(customer1.getId(), customer1);
         customerMap.put(customer2.getId(), customer2);
+        customerMap.put(customer3.getId(), customer3);
 
     }
 
     @Override
-    public List ListCustomers(){
+    public List<Customer> getAllCustomers(){
         return new ArrayList(customerMap.values());
     }
 

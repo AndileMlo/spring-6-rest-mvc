@@ -69,7 +69,8 @@ class BeerControllerTest {
 
         mockMvc.perform(get("/api/v1/beer/" +  testBeer.getId())
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(testBeer.getId().toString())))
                 .andExpect(jsonPath("$.beerName", is(testBeer.getBeerName())));
     }

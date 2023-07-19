@@ -9,7 +9,7 @@ import java.util.UUID;
 
 
 public interface CustomerService {
-    List<Customer> ListCustomers();
+    List<Customer> getAllCustomers();
 
     Customer getCustomerByID (UUID id);
 
