@@ -67,6 +67,19 @@ class CustomerControllerTest {
                 .andExpect(header().exists("Location"));
     }
 
+    @Test
+    void testUpdateCustomer() throws Exception {
+
+        Customer customer = customerServiceImpl.getAllCustomers().get(0);
+
+        mockMvc.perform(put("/api/v1/customer/"+ customer.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customer)))
+                .andExpect(status().isNoContent());
+
+        verify(customerService).updateByID(any(UUID.class),any(Customer.class));
+    }
 
 
     @Test
@@ -83,7 +96,7 @@ class CustomerControllerTest {
     }
 
 
-    
+
     @Test
     void getCustomerById() throws Exception {
 
