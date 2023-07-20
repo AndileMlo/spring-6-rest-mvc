@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BeerService {
-    void updateBeerByID(UUID beerId, Beer beer);
+    void updateBeerById(UUID beerId, Beer beer);
 
     List<Beer> listBeers();
 
-    Beer getBeerByID (UUID id);
+    Beer getBeerById (UUID id);
 
     Beer saveNewBeer(Beer beer);
 
-    void deleteBeerByID(UUID beerID);
+    void deleteBeerById(UUID beerId);
 
-    void patchBeerbyId(UUID beerID, Beer beer);
+    void patchBeerbyId(UUID beerId, Beer beer);
 }

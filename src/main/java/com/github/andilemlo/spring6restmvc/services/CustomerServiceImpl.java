@@ -52,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Builder
     @Override
-    public Customer getCustomerByID(UUID id) {
+    public Customer getCustomerById(UUID id) {
         return customerMap.get(id);
     }
 
@@ -73,15 +73,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateByID(UUID customerID, Customer customer) {
+    public void updateById(UUID customerID, Customer customer) {
         Customer existing = customerMap.get(customerID);
         existing.setCustomerName(customer.getCustomerName());
         customerMap.put(existing.getId(),existing);
     }
 
     @Override
-    public void deleteCustomerbyId(UUID customerID) {
-        customerMap.remove(customerID);
+    public void deleteCustomerbyId(UUID customerId) {
+        customerMap.remove(customerId);
     }
 
     @Override

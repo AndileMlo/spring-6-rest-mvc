@@ -65,7 +65,7 @@ public class BeerServiceImpl implements BeerService {
 
 
     @Override
-    public void updateBeerByID(UUID beerId, Beer beer) {
+    public void updateBeerById(UUID beerId, Beer beer) {
         Beer existing = beerMap.get(beerId);
         existing.setBeerName(beer.getBeerName());
         existing.setPrice(beer.getPrice());
@@ -84,7 +84,7 @@ public class BeerServiceImpl implements BeerService {
 
     @Builder
     @Override
-    public Beer getBeerByID(UUID id) {
+    public Beer getBeerById(UUID id) {
 
         log.debug("(GetBeer ID- Service was called"
         );
@@ -114,13 +114,13 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void deleteBeerByID(UUID beerID) {
-        beerMap.remove(beerID);
+    public void deleteBeerById(UUID beerId) {
+        beerMap.remove(beerId);
     }
 
     @Override
-    public void patchBeerbyId(UUID beerID, Beer beer) {
-        Beer existing = beerMap.get(beerID);//
+    public void patchBeerbyId(UUID beerId, Beer beer) {
+        Beer existing = beerMap.get(beerId);//
         if (StringUtils.hasText(beer.getBeerName())){
             existing.setBeerName(beer.getBeerName());
         }

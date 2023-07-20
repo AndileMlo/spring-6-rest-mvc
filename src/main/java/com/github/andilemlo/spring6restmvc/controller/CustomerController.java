@@ -16,23 +16,27 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController//@RestController
 
-@RequestMapping("/api/v1/customer")//@RequestMapping("/api/v1/customer")
+
 public class CustomerController {
+
+    public static final String CUSTOMER_PATH = "/api/v1/customer";
+    public static final String CUSTOMER_PATH_ID = CUSTOMER_PATH + "/{customerId}";
+
     private final CustomerService customerService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(value = CUSTOMER_PATH)
     public List<Customer> consumerList(){
         return customerService.getAllCustomers();
     }
 
-    @DeleteMapping("{customerId}")
+    @DeleteMapping(CUSTOMER_PATH_ID)
     public ResponseEntity deleteById (@PathVariable("customerId") UUID customerId){
         customerService.deleteCustomerbyId(customerId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
 
     }
 
-    @PatchMapping("{customerId}")
+    @PatchMapping(CUSTOMER_PATH_ID)
     public ResponseEntity updateCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
 
         customerService.patchCustomerById(customerId, customer);
@@ -42,14 +46,14 @@ public class CustomerController {
 
     }
 
-   @PutMapping("{customerId}")
-    public ResponseEntity updateByID(@PathVariable("customerId") UUID customerID, @RequestBody Customer customer){
-        customerService.updateByID(customerID, customer);
+   @PutMapping(CUSTOMER_PATH_ID)
+    public ResponseEntity updateById(@PathVariable("customerId") UUID customerID, @RequestBody Customer customer){
+        customerService.updateById(customerID, customer);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping
+    @PostMapping(CUSTOMER_PATH)
     public ResponseEntity handlePost(@RequestBody Customer customer){
 
 
@@ -61,12 +65,12 @@ public class CustomerController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "{customerID}", method = RequestMethod.GET)
-    public Customer getCustomerById(@PathVariable UUID customerID){
+    @GetMapping(value = CUSTOMER_PATH_ID)
+    public Customer getCustomerById(@PathVariable UUID customerId){
 
         //  log.debug("GetBeer ID- Controller was called");
 
-        return customerService.getCustomerByID(customerID);
+        return customerService.getCustomerById(customerId);
     }
 
 }
