@@ -1,7 +1,6 @@
 package com.github.andilemlo.spring6restmvc.services;
 
 import com.github.andilemlo.spring6restmvc.model.Customer;
-import lombok.Data;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +16,7 @@ public interface CustomerService {
 
     void updateByID(UUID customerID, Customer customer);
 
-    void deleteCustomerbyId(UUID uuid, Customer customer);
+    void deleteCustomerbyId(UUID uuid);
 
     void patchCustomerById(UUID customerId, Customer customer);
 }

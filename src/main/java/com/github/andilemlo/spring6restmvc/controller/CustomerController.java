@@ -26,8 +26,8 @@ public class CustomerController {
     }
 
     @DeleteMapping("{customerId}")
-    public ResponseEntity deleteById (@PathVariable("customerId") UUID customerId, Customer customer){
-        customerService.deleteCustomerbyId(customerId, customer);
+    public ResponseEntity deleteById (@PathVariable("customerId") UUID customerId){
+        customerService.deleteCustomerbyId(customerId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
 
     }
