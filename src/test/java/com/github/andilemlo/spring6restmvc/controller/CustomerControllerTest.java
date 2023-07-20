@@ -14,14 +14,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 //import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -63,10 +65,9 @@ class CustomerControllerTest {
                         .content(objectMapper.writeValueAsString(customer)))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"));
-
-
-
     }
+
+
 
     @Test
     void testListCustomers () throws Exception {
@@ -80,19 +81,9 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.length()", is(3)));
 
     }
-/*
-    @Test
-    void testCreateNewCustomer(){
-        ObjectMapper objectMapper = new ObjectMapper();
 
 
-
-        System.out.println();
-
-
-
-    }*/
-
+    
     @Test
     void getCustomerById() throws Exception {
 

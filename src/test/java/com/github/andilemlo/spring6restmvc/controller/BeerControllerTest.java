@@ -7,6 +7,7 @@ package com.github.andilemlo.spring6restmvc.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.andilemlo.spring6restmvc.model.Beer;
+import com.github.andilemlo.spring6restmvc.model.Customer;
 import com.github.andilemlo.spring6restmvc.services.BeerService;
 import com.github.andilemlo.spring6restmvc.services.BeerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +25,10 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -64,6 +65,23 @@ class BeerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()", is(3)));
         ;
+    }
+
+    @Test
+    void testUpdateBeer() throws Exception {
+
+        Beer beer = beerServiceImpl.listBeers().get(0);
+
+        mockMvc.perform(put("/api/v1/beer/"+ beer.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(beer)))
+               // .andExpect()
+               .andExpect(status().isNoContent());
+
+        verify(beerService).updateBeerByID(any(UUID.class),any(Beer.class));//.updateBeerByID(any(UUID.class), any(Beer.class));
+
+
     }
 
     @Test
