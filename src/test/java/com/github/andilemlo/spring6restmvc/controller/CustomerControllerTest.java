@@ -45,7 +45,22 @@ class CustomerControllerTest {
 
     @Autowired
     CustomerController customerController;
-    
+
+
+    @Test
+    void testDeleteCustomer() throws Exception {
+        Customer customer = customerServiceImpl.getAllCustomers().get(0);
+
+        mockMvc.perform(delete("/api/v1/customer/"+ customer.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        ArgumentCaptor<UUID> uuidArgumentCaptor = ArgumentCaptor.forClass(UUID.class);
+        verify(customerService).deleteCustomerbyId(uuidArgumentCaptor.capture());
+        assertThat(customer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
+
+
+    }
 
     @Test
     void testCreateNewCustomer() throws Exception {
