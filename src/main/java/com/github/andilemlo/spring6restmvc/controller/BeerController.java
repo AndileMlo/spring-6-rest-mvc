@@ -64,6 +64,8 @@ public class BeerController {
 
     }
 
+
+
     @GetMapping(value = BEER_PATH_ID)
     public Beer getBeerbyId(@PathVariable UUID beerId){
 
