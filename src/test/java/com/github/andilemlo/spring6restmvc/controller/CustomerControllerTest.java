@@ -1,7 +1,6 @@
 package com.github.andilemlo.spring6restmvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.andilemlo.spring6restmvc.model.Beer;
 import com.github.andilemlo.spring6restmvc.model.Customer;
 import com.github.andilemlo.spring6restmvc.services.CustomerService;
 import com.github.andilemlo.spring6restmvc.services.CustomerServiceImpl;
@@ -57,7 +56,7 @@ class CustomerControllerTest {
     ArgumentCaptor<Customer> customerArgumentCaptor;
 
     @Test
-    void testPatchCustomer() throws Exception{
+    void testPatchCustomer() throws Exception {
         Customer customer = customerServiceImpl.getAllCustomers().get(0);
 
         Map<String, Object> customerMap = new HashMap<>();
@@ -136,7 +135,15 @@ class CustomerControllerTest {
 
     }
 
+    @Test
+    void getCustomerByNotFound() throws Exception {
 
+        given(customerService.getCustomerById(any(UUID.class))).willThrow(NotFoundException.class);
+
+        mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID,UUID.randomUUID()))
+                .andExpect(status().isNotFound());
+
+    }
 
 
     @Test
