@@ -1,9 +1,8 @@
 package com.github.andilemlo.spring6restmvc.controller;
 
 
-import com.github.andilemlo.spring6restmvc.model.Beer;
+import com.github.andilemlo.spring6restmvc.model.BeerDTO;
 import com.github.andilemlo.spring6restmvc.services.BeerService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -29,7 +27,7 @@ public class BeerController {
 
 
     @PutMapping(BEER_PATH_ID)//@PutMapping("{beerId}")
-    public ResponseEntity updatebyID(@PathVariable("beerId") UUID beerId , @RequestBody Beer beer){
+    public ResponseEntity updatebyID(@PathVariable("beerId") UUID beerId , @RequestBody BeerDTO beer){
 
         beerService.updateBeerById(beerId, beer);
 
@@ -46,7 +44,7 @@ public class BeerController {
     }
 
     @PatchMapping(BEER_PATH_ID)
-    public ResponseEntity updateBeerbyId (@PathVariable("beerId")UUID beerID, @RequestBody Beer beer){
+    public ResponseEntity updateBeerbyId (@PathVariable("beerId")UUID beerID, @RequestBody BeerDTO beer){
 
         beerService.patchBeerbyId(beerID, beer);
 
@@ -54,9 +52,9 @@ public class BeerController {
     }
 
     @PostMapping(BEER_PATH)
-    public ResponseEntity handlePost(@RequestBody Beer beer){
+    public ResponseEntity handlePost(@RequestBody BeerDTO beer){
 
-        Beer savedBeer = beerService.saveNewBeer(beer);
+        BeerDTO savedBeer = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
@@ -67,7 +65,7 @@ public class BeerController {
 
 
     @GetMapping(value = BEER_PATH_ID)
-    public Beer getBeerbyId(@PathVariable UUID beerId){
+    public BeerDTO getBeerbyId(@PathVariable UUID beerId){
 
         log.debug("GetBeer ID- Controller was called 789");
 
@@ -75,7 +73,7 @@ public class BeerController {
     }
 
     @GetMapping(value = BEER_PATH) //RequestMethod.GET)
-    public List<Beer> listBeer(){
+    public List<BeerDTO> listBeer(){
         return beerService.listBeers();
     }
 

@@ -1,9 +1,8 @@
 package com.github.andilemlo.spring6restmvc.controller;
 
 
-import com.github.andilemlo.spring6restmvc.model.Customer;
+import com.github.andilemlo.spring6restmvc.model.CustomerDTO;
 import com.github.andilemlo.spring6restmvc.services.CustomerService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping(value = CUSTOMER_PATH)
-    public List<Customer> consumerList(){
+    public List<CustomerDTO> consumerList(){
         return customerService.getAllCustomers();
     }
 
@@ -37,7 +36,7 @@ public class CustomerController {
     }
 
     @PatchMapping(CUSTOMER_PATH_ID)
-    public ResponseEntity updateCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
+    public ResponseEntity updateCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody CustomerDTO customer){
 
         customerService.patchCustomerById(customerId, customer);
 
@@ -47,17 +46,17 @@ public class CustomerController {
     }
 
    @PutMapping(CUSTOMER_PATH_ID)
-    public ResponseEntity updateById(@PathVariable("customerId") UUID customerID, @RequestBody Customer customer){
+    public ResponseEntity updateById(@PathVariable("customerId") UUID customerID, @RequestBody CustomerDTO customer){
         customerService.updateById(customerID, customer);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(CUSTOMER_PATH)
-    public ResponseEntity handlePost(@RequestBody Customer customer){
+    public ResponseEntity handlePost(@RequestBody CustomerDTO customer){
 
 
-        Customer savedCustomer = customerService.saveCustomer(customer);
+        CustomerDTO savedCustomer = customerService.saveCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location" ,  "/api/v1/customer/" +savedCustomer.getId().toString());
@@ -66,7 +65,7 @@ public class CustomerController {
     }
 
     @GetMapping(value = CUSTOMER_PATH_ID)
-    public Customer getCustomerById(@PathVariable UUID customerId){
+    public CustomerDTO getCustomerById(@PathVariable UUID customerId){
 
         //  log.debug("GetBeer ID- Controller was called");
 
