@@ -70,7 +70,7 @@ public class CustomerController {
 
         //  log.debug("GetBeer ID- Controller was called");
 
-        return customerService.getCustomerById(customerId);
+        return customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
     }
 
 }
