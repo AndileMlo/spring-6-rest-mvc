@@ -23,7 +23,20 @@ class BeerControllerIT {
     @Autowired
     BeerRepository beerRepository;
 
-    
+    @Test
+    void testBeerIdNotFound() {
+        assertThrows(NotFoundException.class, ()-> {
+            beerController.getBeerbyId(UUID.randomUUID());});
+
+    }
+
+    @Test
+    void testGetBeerById() {
+        Beer beer = beerRepository.findAll().get(0);
+        BeerDTO dto = beerController.getBeerbyId(beer.getId());
+        assertThat(dto).isNotNull();
+
+    }
 
     @Test
     void testListBeers() {
