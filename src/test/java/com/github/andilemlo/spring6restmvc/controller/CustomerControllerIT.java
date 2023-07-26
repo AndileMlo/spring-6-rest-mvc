@@ -2,6 +2,7 @@ package com.github.andilemlo.spring6restmvc.controller;
 
 import com.github.andilemlo.spring6restmvc.entities.Beer;
 import com.github.andilemlo.spring6restmvc.entities.Customer;
+import com.github.andilemlo.spring6restmvc.mappers.BeerMapper;
 import com.github.andilemlo.spring6restmvc.model.BeerDTO;
 import com.github.andilemlo.spring6restmvc.model.CustomerDTO;
 import com.github.andilemlo.spring6restmvc.repositories.CustomerRepository;
@@ -26,6 +27,7 @@ public class CustomerControllerIT {
 
     @Autowired
     CustomerRepository customerRepository;
+
 
     @Test
     void testCustomerNotFound() {
