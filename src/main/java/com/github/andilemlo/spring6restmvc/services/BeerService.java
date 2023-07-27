@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface BeerService {
-    void updateBeerById(UUID beerId, BeerDTO beer);
+    Optional<BeerDTO> updateBeerById(UUID beerId, BeerDTO beer);
 
     List<BeerDTO> listBeers();
 
