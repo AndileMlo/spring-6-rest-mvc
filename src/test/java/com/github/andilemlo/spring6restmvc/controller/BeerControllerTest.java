@@ -65,6 +65,25 @@ class BeerControllerTest {
     BeerService beerService;
 
 
+
+    @Test
+    void testUpdateBeerNullBeerName() throws Exception {
+
+        BeerDTO beerDto =beerServiceImpl.listBeers().get(0);
+        beerDto.setBeerName("");
+
+        given(beerService.updateBeerById(any(),any())).willReturn(Optional.of(beerDto));
+
+        mockMvc.perform(put(BeerController.BEER_PATH_ID, beerDto.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(beerDto)))
+                        .andExpect(status().isBadRequest())
+                        .andExpect(jsonPath("$.length()",is(1)));
+                      //  .andReturn();
+
+
+    }
     @Test
     void testCreateBeerNullBeerName() throws Exception{
         BeerDTO beerDTO = BeerDTO.builder().build();
@@ -75,11 +94,30 @@ class BeerControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(beerDTO)))
-                .andExpect(status().isBadRequest()).andReturn();
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.length()",is(6)))
+                .andReturn();
 
 
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
+
+/*
+    @Test
+    void testCreateBeerNullBeerStyle() throws Exception {
+        BeerDTO beerDTO = BeerDTO.builder().build();
+
+        given(beerService.saveNewBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers().get(1));
+
+        MvcResult mvcResult = mockMvc.perform(post(BeerController.BEER_PATH)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(beerDTO)))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+
+    }*/
 
 
     @Test

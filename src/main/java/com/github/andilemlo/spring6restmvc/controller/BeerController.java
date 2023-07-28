@@ -28,7 +28,7 @@ public class BeerController {
 
 
     @PutMapping(BEER_PATH_ID)//@PutMapping("{beerId}")
-    public ResponseEntity updatebyID(@PathVariable("beerId") UUID beerId , @RequestBody BeerDTO beer){
+    public ResponseEntity updatebyID(@PathVariable("beerId") UUID beerId ,@Validated @RequestBody BeerDTO beer){
 
         if( beerService.updateBeerById(beerId, beer).isEmpty()){
 
