@@ -5,6 +5,7 @@ import com.github.andilemlo.spring6restmvc.entities.Beer;
 import com.github.andilemlo.spring6restmvc.mappers.BeerMapper;
 import com.github.andilemlo.spring6restmvc.model.BeerDTO;
 import com.github.andilemlo.spring6restmvc.repositories.BeerRepository;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -68,7 +72,9 @@ class BeerControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(beerMap)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.length()", is(1)))
+        .andReturn();
 
     }
 
