@@ -33,6 +33,7 @@ public class Beer {
 
     @NotBlank
     @NotNull
+    @Size(max = 50)
     @Column(length = 50)
     private String beerName;
 
@@ -41,6 +42,7 @@ public class Beer {
 
     @NotBlank
     @NotNull
+    @Size(max = 255)
     private String upc;
     private Integer quantityOnHand;
 

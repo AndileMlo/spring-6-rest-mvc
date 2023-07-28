@@ -19,7 +19,21 @@ class BeerRepositoryTest {
     @Autowired
     BeerRepository beerRepository;
 
+    @Test
+    void testSaveBeerNameTooLong(){
+        assertThrows(ConstraintViolationException.class, ()-> {
 
+            Beer savedBeer = beerRepository.save(Beer.builder()
+                    .beerName("My New and improved beer 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890")
+                    .beerStyle(BeerStyle.ALE)
+                    .upc("567897656")
+                    .price(new BigDecimal("11.99"))
+                    .build());
+
+            beerRepository.flush();
+        });
+
+    }
 
 
     @Test
