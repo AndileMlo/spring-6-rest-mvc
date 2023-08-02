@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BeerCSVRecord {
-
+    @CsvBindByName
     private Integer row;
     @CsvBindByName(column = "count.x")
     private Integer count;
