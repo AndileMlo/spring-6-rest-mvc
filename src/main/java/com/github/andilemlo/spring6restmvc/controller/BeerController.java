@@ -81,7 +81,7 @@ public class BeerController {
     }
 
     @GetMapping(value = BEER_PATH) //RequestMethod.GET)
-    public List<BeerDTO> listBeers(){
+    public List<BeerDTO> listBeers(@RequestParam(required = false) String beerName){
         return beerService.listBeers();
     }
 
