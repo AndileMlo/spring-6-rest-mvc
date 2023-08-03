@@ -31,16 +31,6 @@ class BeerRepositoryTest {
 
     }
 
-
-
-    /*
-@Test
-    void testGetBeerListByName() {
-        List<Beer> list = beerRepository.findAllBeerNameIsLikeIgnoreCase("%IPA%");
-
-        assertThat(list.size()).isEqualTo(336);
-    }*/
-
     @Test
     void testSaveBeerNameTooLong(){
         assertThrows(ConstraintViolationException.class, ()-> {
