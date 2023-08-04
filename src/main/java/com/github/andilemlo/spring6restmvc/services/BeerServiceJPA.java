@@ -3,6 +3,7 @@ package com.github.andilemlo.spring6restmvc.services;
 import com.github.andilemlo.spring6restmvc.entities.Beer;
 import com.github.andilemlo.spring6restmvc.mappers.BeerMapper;
 import com.github.andilemlo.spring6restmvc.model.BeerDTO;
+import com.github.andilemlo.spring6restmvc.model.BeerStyle;
 import com.github.andilemlo.spring6restmvc.repositories.BeerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -24,6 +25,45 @@ public class BeerServiceJPA implements BeerService {
     private final BeerRepository beerRepository;
     private final BeerMapper beerMapper;
 
+
+    
+
+    public List<Beer> listBeersByStyle(BeerStyle beerStyle){
+        return beerRepository.findBeersByBeerStyle(beerStyle);
+    }
+    @Override
+    public List<BeerDTO> listBeers(String beerName, BeerStyle beerStyle) {
+
+        List<Beer> beerList;
+
+        if(StringUtils.hasText(beerName) && beerStyle == null){
+            beerList = listBeersByName(beerName);
+
+        } else if (!StringUtils.hasText(beerName) && beerStyle != null) {
+            beerList = listBeersByStyle(beerStyle);
+            
+        } else{ beerList = beerRepository.findAll();}
+
+
+        return beerList
+                .stream()
+                .map(beerMapper::beerToBeerDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<Beer> listBeersByName(String beerName) {
+        return  beerRepository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%");
+    }
+
+
+
+    @Override
+    public Optional<BeerDTO> getBeerById(UUID id) {
+        return Optional.ofNullable(beerMapper
+                .beerToBeerDto(beerRepository
+                        .findById(id)
+                        .orElse(null)));
+    }
     @Override
     public Optional<BeerDTO> updateBeerById(UUID beerId, BeerDTO beer) {
         AtomicReference <Optional<BeerDTO>> atomicReference = new AtomicReference<>();
@@ -39,36 +79,6 @@ public class BeerServiceJPA implements BeerService {
         },()-> {atomicReference.set(Optional.empty());});
         return atomicReference.get();
     }
-
-    @Override
-    public List<BeerDTO> listBeers(String beerName) {
-
-        List<Beer> beerList;
-
-        if(StringUtils.hasText(beerName)){
-            beerList = listBeersByName(beerName);
-
-        }else{ beerList = beerRepository.findAll();}
-
-
-        return beerList
-                .stream()
-                .map(beerMapper::beerToBeerDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<Beer> listBeersByName(String beerName) {
-        return  beerRepository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%");
-    }
-
-    @Override
-    public Optional<BeerDTO> getBeerById(UUID id) {
-        return Optional.ofNullable(beerMapper
-                .beerToBeerDto(beerRepository
-                        .findById(id)
-                        .orElse(null)));
-    }
-
     @Override
     public BeerDTO saveNewBeer(BeerDTO beer) {
         return beerMapper.beerToBeerDto(beerRepository.save(beerMapper.beerDtoToBeer(beer)));
