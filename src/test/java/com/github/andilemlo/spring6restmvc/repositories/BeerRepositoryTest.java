@@ -1,7 +1,6 @@
 package com.github.andilemlo.spring6restmvc.repositories;
 
 import com.github.andilemlo.spring6restmvc.bootstrap.BootStrapData;
-import com.github.andilemlo.spring6restmvc.controller.NotFoundException;
 import com.github.andilemlo.spring6restmvc.entities.Beer;
 import com.github.andilemlo.spring6restmvc.model.BeerStyle;
 import com.github.andilemlo.spring6restmvc.services.BeerCsvServiceImpl;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,8 +26,8 @@ class BeerRepositoryTest {
 
     @Test
     void testGetBeerListByName() {
-        List<Beer> list = beerRepository.findAllByBeerNameIsLikeIgnoreCase("%IPA%");
-        assertThat(list.size()).isEqualTo(336);
+        Page<Beer> list = beerRepository.findAllByBeerNameIsLikeIgnoreCase("%IPA%", null);
+        assertThat(list.getContent().size()).isEqualTo(336);
 
     }
 
