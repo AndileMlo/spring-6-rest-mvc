@@ -11,6 +11,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -27,7 +28,7 @@ public class Beer {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.CHAR)
-    @Column(length = 36, columnDefinition = "varchar(36)",updatable = false,nullable = false)
+    @Column(length = 36, columnDefinition = "varchar(36)",updatable = false,nullable = false,insertable = false)
     private UUID id;
 
     @Version
@@ -50,6 +51,9 @@ public class Beer {
 
     @NotNull
     private BigDecimal price;
+
+    @OneToMany(mappedBy = "beer")
+    private Set<BeerOrderLine> beerOrderLines;
 
     @CreationTimestamp
     private LocalDateTime createdDate;
