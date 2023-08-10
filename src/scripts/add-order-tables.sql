@@ -2,7 +2,7 @@ drop table if exists beer_order;
 
 drop table if exists beer_order_line;
 
-create table 'beer_order' (
+create table `beer_order` (
             id varchar(36) not null,
             created_date DATETIME(6) DEFAULT NULL,
             customer_ref VARCHAR(255)  DEFAULT NULL,
@@ -13,7 +13,7 @@ create table 'beer_order' (
             CONSTRAINT FOREIGN KEY (customer_id) REFERENCES customer (id)
 ) engine=InnoDB;
 
-CREATE TABLE beer_order_line (
+CREATE TABLE `beer_order_line` (
             id varchar(36) not null,
             beer_id VARCHAR(36)  DEFAULT NULL,
             created_date DATETIME(6)  DEFAULT NULL,
