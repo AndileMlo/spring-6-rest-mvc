@@ -27,7 +27,6 @@ public class BeerOrderLine {
     @Column(length = 36, columnDefinition = "varchar(36)",updatable = false,nullable = false)
     private UUID id;
 
-    //private String beer_id;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -46,7 +45,7 @@ public class BeerOrderLine {
     @Version
     private Long version;
 
-  //  private String beer_order_id;// have to refactor this
+  //  private String beer_order_id
 
     @ManyToOne
     BeerOrder beerOrder;
