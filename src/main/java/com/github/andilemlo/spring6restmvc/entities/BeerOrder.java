@@ -16,18 +16,20 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
 @Builder
-@Entity
+//@AllArgsConstructor
 public class BeerOrder {
 
-    public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef, Customer customer, Set<BeerOrderLine> beerOrderLines) {
+    public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef, BeerOrderShipment beerOrderShipment, Customer customer, Set<BeerOrderLine> beerOrderLines) {
         this.id = id;
         this.version = version;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
         this.customerRef = customerRef;
-        this.setCustomer(customer);
+        this.beerOrderShipment = beerOrderShipment;
+        this.setCustomer(customer);// = customer;
         this.beerOrderLines = beerOrderLines;
     }
 
@@ -61,6 +63,9 @@ public class BeerOrder {
         this.customer = customer;
         customer.getBeerOrders().add(this);
     }
+
+    @OneToOne
+  private  BeerOrderShipment beerOrderShipment;
 
     @ManyToOne
   private Customer customer;
