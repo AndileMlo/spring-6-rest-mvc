@@ -28,8 +28,8 @@ public class BeerOrder {
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
         this.customerRef = customerRef;
-        this.beerOrderShipment = beerOrderShipment;
-        this.setCustomer(customer);// = customer;
+        this.setBeerOrderShipment(beerOrderShipment);
+        this.setCustomer(customer);;
         this.beerOrderLines = beerOrderLines;
     }
 
@@ -64,7 +64,12 @@ public class BeerOrder {
         customer.getBeerOrders().add(this);
     }
 
-    @OneToOne
+    public void setBeerOrderShipment(BeerOrderShipment beerOrderShipment) {
+        this.beerOrderShipment = beerOrderShipment;
+        beerOrderShipment.setBeerOrder(this);
+    }
+
+    @OneToOne(cascade = CascadeType.PERSIST)
   private  BeerOrderShipment beerOrderShipment;
 
     @ManyToOne
