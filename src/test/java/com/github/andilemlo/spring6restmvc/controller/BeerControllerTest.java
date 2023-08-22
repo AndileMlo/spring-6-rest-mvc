@@ -5,6 +5,7 @@ package com.github.andilemlo.spring6restmvc.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.andilemlo.spring6restmvc.config.SpringSecConfig;
 import com.github.andilemlo.spring6restmvc.model.BeerDTO;
 import com.github.andilemlo.spring6restmvc.services.BeerService;
 import com.github.andilemlo.spring6restmvc.services.BeerServiceImpl;
@@ -15,6 +16,7 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,6 +33,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -116,6 +119,7 @@ class BeerControllerTest {
 
          mockMvc.perform(patch(BeerController.BEER_PATH_ID, beer.getId())
                  .contentType(MediaType.APPLICATION_JSON)
+                         .with(httpBasic("user1","password"))// will not work only works for get operations without configuring
                  .accept(MediaType.APPLICATION_JSON)
                          .content(objectMapper.writeValueAsString(beerMap)))
                  .andExpect(status().isNoContent());
@@ -133,6 +137,7 @@ class BeerControllerTest {
                 .willReturn(beerServiceImpl.listBeers(null,null, false, 1, 25));
 
         mockMvc.perform(get(BeerController.BEER_PATH)
+                        .with(httpBasic("user1","password"))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -148,6 +153,7 @@ class BeerControllerTest {
         given(beerService.deleteBeerById(any())).willReturn(true);
 
         mockMvc.perform(delete(BeerController.BEER_PATH_ID, beer.getId())
+                        .with(httpBasic("user1","password")) // will not work only works for get operations without configuring
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
