@@ -40,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 //@SpringBootTest
 @WebMvcTest(BeerController.class)
+@Import(SpringSecConfig.class)
 class BeerControllerTest {
 
     @Autowired
@@ -68,7 +69,8 @@ class BeerControllerTest {
     BeerService beerService;
 
 
-
+    public static final String USERNAME = "user1";
+    public static final String PASSWORD = "password";
 
     @Test
     void testUpdateBeerNullBeerName() throws Exception {
@@ -81,6 +83,7 @@ class BeerControllerTest {
 
         mockMvc.perform(put(BeerController.BEER_PATH_ID, beerDto.getId())
                         .accept(MediaType.APPLICATION_JSON)
+                        .with(httpBasic(USERNAME,PASSWORD))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(beerDto)))
                         .andExpect(status().isBadRequest())
@@ -99,6 +102,7 @@ class BeerControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(post(BeerController.BEER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
+                        .with(httpBasic(USERNAME,PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(beerDTO)))
                 .andExpect(status().isBadRequest())
@@ -119,7 +123,7 @@ class BeerControllerTest {
 
          mockMvc.perform(patch(BeerController.BEER_PATH_ID, beer.getId())
                  .contentType(MediaType.APPLICATION_JSON)
-                         .with(httpBasic("user1","password"))// will not work only works for get operations without configuring
+                         .with(httpBasic(USERNAME,PASSWORD))// will not work only works for get operations without configuring
                  .accept(MediaType.APPLICATION_JSON)
                          .content(objectMapper.writeValueAsString(beerMap)))
                  .andExpect(status().isNoContent());
@@ -137,7 +141,7 @@ class BeerControllerTest {
                 .willReturn(beerServiceImpl.listBeers(null,null, false, 1, 25));
 
         mockMvc.perform(get(BeerController.BEER_PATH)
-                        .with(httpBasic("user1","password"))
+                        .with(httpBasic(USERNAME,PASSWORD))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -153,7 +157,7 @@ class BeerControllerTest {
         given(beerService.deleteBeerById(any())).willReturn(true);
 
         mockMvc.perform(delete(BeerController.BEER_PATH_ID, beer.getId())
-                        .with(httpBasic("user1","password")) // will not work only works for get operations without configuring
+                        .with(httpBasic(USERNAME,PASSWORD)) // will not work only works for get operations without configuring
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
@@ -171,6 +175,7 @@ class BeerControllerTest {
         given(beerService.updateBeerById(any(),any())).willReturn(Optional.of(beer));
 
         mockMvc.perform(put(BeerController.BEER_PATH_ID, beer.getId())
+                        .with(httpBasic(USERNAME,PASSWORD))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(beer)))
@@ -193,6 +198,7 @@ class BeerControllerTest {
                 .willReturn(beerServiceImpl.listBeers(null,null, false, 1, 25).getContent().get(1));
 
         mockMvc.perform(post(BeerController.BEER_PATH)
+                        .with(httpBasic(USERNAME,PASSWORD))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(beer)))
@@ -206,7 +212,8 @@ class BeerControllerTest {
 
         given(beerService.getBeerById(any(UUID.class))).willReturn(Optional.empty());
 
-        mockMvc.perform(get(BeerController.BEER_PATH_ID, UUID.randomUUID()))
+        mockMvc.perform(get(BeerController.BEER_PATH_ID, UUID.randomUUID())
+                        .with(httpBasic(USERNAME,PASSWORD)))
                 .andExpect(status().isNotFound());
 
     }
@@ -220,7 +227,8 @@ class BeerControllerTest {
         given(beerService.getBeerById(testBeer.getId())).willReturn(Optional.of(testBeer));
 
         mockMvc.perform(get(BeerController.BEER_PATH_ID, testBeer.getId())
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+                        .with(httpBasic(USERNAME,PASSWORD)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(testBeer.getId().toString())))
