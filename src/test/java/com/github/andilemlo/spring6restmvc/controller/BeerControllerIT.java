@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcConfigurer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -162,7 +164,14 @@ class BeerControllerIT {
         beerMap.put("beerName", "New Name1234567890 1234567890 123456789012345678901234567890123456789012345678901234567890");
 
         mockMvc.perform(patch(BeerController.BEER_PATH_ID, beer.getId())
-                        .with(httpBasic(BeerControllerTest.USERNAME, BeerControllerTest.PASSWORD))
+                        .with(jwt().jwt(jwt -> {
+                                jwt.claims(claims -> {
+                            claims.put("scope","message-read");
+                            claims.put("scope", "message-write");
+                           })
+                                        .subject("messaging-client")
+                                        .notBefore(Instant.now().minusSeconds(5l));
+                        }))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(beerMap)))
